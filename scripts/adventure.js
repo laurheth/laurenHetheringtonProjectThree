@@ -7,10 +7,13 @@ const adventureApp = {
 
     // Game data! This object will be a beast to write, so I hope you enjoy it.
     data: {
+        gameName: "Escape from Project Three",
+        lookAction: "Look around again.",
+        emptyPockets: "Your pockets are empty.",
         dungeonCell: {
             name: 'Dungeon Cell',
-            description: `You are in a dark and cold dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. You have no recollection of how you got here, but it probably kind of sucked.`,
-            img: `https://placekitten.com/100/100`,
+            description: `You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. You have no recollection of how you got here, but it probably kind of sucked.`,
+            img: `https://placekitten.com/500/500`,
             actions: [
                 {
                     ifNot: [`key`],
@@ -49,7 +52,7 @@ const adventureApp = {
         outside: {
             name: "Freedom!",
             description: `You are outside! You have escaped from the dungeon and are free!`,
-            img: `https://placekitten.com/100/100`,
+            img: `https://placekitten.com/400/400`,
             actions: []
         }
     },
@@ -57,11 +60,32 @@ const adventureApp = {
     // Player data
     player: {
         location: 'dungeonCell',
-        inventory: [],
-        flags: [],
+        inventory: {},
+        flags: {},
         checkCondition: function(condition) {
-            return this.inventory.includes(condition) || this.flags.includes(condition);
-        }
+            return condition in this.inventory || condition in this.flags;
+        },
+        
+        add: function(type, item) {
+            if (type in this && typeof this[type] === 'object') {
+                if (item in this[type]) {
+                    this[type][item]++;
+                }
+                else {
+                    this[type][item]=1;
+                }
+            }
+        },
+        remove: function(type, item, all=false) {
+            if (type in this && typeof this[type] === 'object') {
+                if (item in this[type]) {
+                    this[type][item]--;
+                    if (this[type][item] <= 0 || all) {
+                        delete this[type][item];
+                    }
+                }
+            }
+        },
     },
 
     // Check validity of an action
@@ -81,10 +105,16 @@ const adventureApp = {
     },
 
     // Display room. Prepend with the result of the previously taken action.
-    displayRoom: function(lastActionMessage='') {
+    display: function(lastActionMessage='',includeDescription=true) {
         let locationObj = this.data[this.player.location];
         this.$locationTitle.text(locationObj.name);
-        let description = `${lastActionMessage} <p>${locationObj.description}</p>`;
+        let description = '';
+        if (lastActionMessage !== '') {
+            description += `<p class="lastAction">${lastActionMessage}</p>`;
+        }
+        if (includeDescription) {
+            description += `<p>${locationObj.description}</p>`;
+        }
         this.$imgContainer.html(`<img src=${locationObj.img} alt="Image of the current location.">`);
 
         this.$actionBox.empty();
@@ -107,38 +137,75 @@ const adventureApp = {
             `;
             this.$actionBox.append(actionElement);
         });
+
+        // Did the player just look around a bit?
+        if (includeDescription) {
+            // Yup
+            // this.player.add('flags','justLooked');
+        }
+        else {
+            // Nope! Include this option!
+            // this.player.remove('flags','justLooked',true);
+            this.$actionBox.append(`
+                <li>
+                    <a href="#">
+                        ${this.data.lookAction}
+                    </a>
+                </li>
+            `);
+        }
+
+        // Force room description if for some reason that's NOTHING, because nothing sucks.
+        if (description === '') {
+            description += `<p>${locationObj.description}</p>`;
+        }
         this.$descriptionBox.html(description);
 
         this.$itemBox.empty();
-        this.player.inventory.forEach((item) => {
-            this.$itemBox.append(`
-                <li>
-                    <a href="#">
-                        ${item}
-                    </a>
-                </li>
-            `)
-        });
+        if (Object.keys(this.player.inventory).length>0) {
+            Object.keys(this.player.inventory).forEach((item) => {
+                this.$itemBox.append(`
+                    <li>
+                        <a href="#">
+                            ${item}
+                        </a>
+                    </li>
+                `)
+            });
+        } 
+        else {
+            this.$itemBox.append(`<li>${this.data.emptyPockets}</li>`);
+        }
     },
 
     doAction: function(actionDone) {
-        // console.log(actionDone);
-        const action = this.data[this.player.location].actions.filter((act) => {
-            return act.action === actionDone.trim() && this.checkValidity(act);
-        })
-        if (action.length > 0) {
-            if ('addInventory' in action[0]) {
-                console.log(action[0].addInventory);
-                this.player.inventory.push(action[0].addInventory);
+        // Special case, "look around"
+        if (actionDone.trim() === this.data.lookAction) {
+            this.display(`You ${this.data.lookAction.toLowerCase()}...`, true);
+        }
+
+        // Figure out action and then run it
+        let action=null;
+        this.data[this.player.location].actions.forEach((act) => {
+            if (act.action === actionDone.trim() && this.checkValidity(act)) {
+                action = act;
             }
-            if ('addFlag' in action[0]) {
-                console.log(action[0].addFlag);
-                this.player.flags.push(action[0].addFlag);
+        });
+        if (action !== null) {
+            if (!('examineRoom' in action)) {
+                action.examineRoom=false;
             }
-            if ('setLocation' in action[0]) {
-                this.player.location = action[0].setLocation;
+            if ('addInventory' in action) {
+                this.player.add('inventory',action.addInventory);
             }
-            this.displayRoom(`<p>${action[0].result}</p>`);
+            if ('addFlag' in action) {
+                this.player.add('flags',action.addFlag);
+            }
+            if ('setLocation' in action) {
+                this.player.location = action.setLocation;
+                action.examineRoom=true;
+            }
+            this.display(`${action.result}`,action.examineRoom);
         }
     },
 
@@ -160,7 +227,8 @@ const adventureApp = {
 
         this.events();
 
-        this.displayRoom(`<p>You awaken after what feels like a very long slumber...</p>`);
+        $('h1').text(this.data.gameName);
+        this.display(`You awaken after what feels like a very long slumber...`);
     }
 };
 

@@ -194,10 +194,22 @@ html {
   font-size: 125%;
 }
 
+body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .wrapper {
   margin: 0 auto;
   width: 75%;
   max-width: 800px;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 body {
@@ -205,8 +217,35 @@ body {
   color: #eeffee;
 }
 
+a {
+  position: relative;
+  color: #ff3333;
+}
+
+a::before {
+  content: "";
+  position: absolute;
+  background: #ff3333;
+  display: block;
+  width: 0%;
+  height: 4px;
+  left: 0;
+  bottom: -4px;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+a:hover::before {
+  width: 100%;
+}
+
+ul {
+  padding-left: 20px;
+}
+
 header {
   min-height: 10vh;
+  padding: 30px 0;
 }
 header h1 {
   text-align: center;
@@ -216,14 +255,25 @@ header h1 {
 
 .row {
   display: flex;
+  justify-content: space-between;
 }
 .row .column {
-  width: 50%;
+  width: calc(50% - 20px / 2 );
 }
 
 main {
   min-height: 85vh;
   position: relative;
+}
+main h2 {
+  margin-bottom: 15px;
+}
+main p {
+  margin: 15px 0;
+}
+main .lastAction {
+  font-weight: bold;
+  color: #ffdd33;
 }
 main aside {
   position: absolute;
@@ -235,4 +285,10 @@ main aside {
 
 footer {
   min-height: 5vh;
+}
+
+.box {
+  border: 4px solid #ff3333;
+  display: inline-block;
+  padding: 10px;
 }
