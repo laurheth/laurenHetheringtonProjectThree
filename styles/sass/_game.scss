@@ -26,14 +26,16 @@ header {
 }
 
 main {
-    position: relative;
     min-height: 85vh;
+    position: relative;
+    // .wrapper {
+    // }
     aside {
-        // display: none;
-        // position: absolute;
-        // width: 10%;
-        // top: 0;
-        // right: 0;
+        position: absolute;
+        min-width: calc((100% - #{$wrapperWidth}) / 2);
+        width: calc((100% - #{$wrapperMaxWidth}) / 2);
+        top: 0;
+        right: 0;
     }
 }
 footer {

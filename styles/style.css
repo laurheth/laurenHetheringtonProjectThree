@@ -222,9 +222,17 @@ header h1 {
 }
 
 main {
-  position: relative;
   min-height: 85vh;
+  position: relative;
 }
+main aside {
+  position: absolute;
+  min-width: calc((100% - 75%) / 2);
+  width: calc((100% - 800px) / 2);
+  top: 0;
+  right: 0;
+}
+
 footer {
   min-height: 5vh;
 }
