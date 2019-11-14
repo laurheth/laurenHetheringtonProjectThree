@@ -8,3 +8,15 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+// Base fonts
+html {
+    font-size: 125%;
+}
+
+// Wrapper
+.wrapper {
+    margin: 0 auto;
+    width: 75%;
+    max-width: 800px;
+}

@@ -1,0 +1,41 @@
+body {
+    background: $mainDark;
+    color: $mainLight;
+}
+
+// .wrapper {
+// }
+
+header {
+    // background: $mainLight;
+    // color: $mainDark;
+    min-height: 10vh;
+    h1 {
+        // margin: 0 auto;
+        text-align: center;
+        text-shadow: 4px 4px 0 $mainAccent;
+        font-size: 50px;
+    }
+}
+
+.row {
+    display: flex;
+    .column {
+        width: 50%;
+    }
+}
+
+main {
+    position: relative;
+    min-height: 85vh;
+    aside {
+        // display: none;
+        // position: absolute;
+        // width: 10%;
+        // top: 0;
+        // right: 0;
+    }
+}
+footer {
+    min-height: 5vh;
+}
