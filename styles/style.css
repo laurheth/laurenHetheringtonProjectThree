@@ -220,6 +220,14 @@ img {
     opacity: 1;
   }
 }
+img {
+  box-shadow: -10px 10px 0 #ff3333;
+}
+
+.shadowRight {
+  box-shadow: 10px 10px 0 #ff3333;
+}
+
 body {
   position: relative;
   background: #110011;
@@ -304,8 +312,8 @@ main .lastAction {
 }
 main aside {
   position: absolute;
-  min-width: calc((100% - 75%) / 2);
-  width: calc((100% - 800px) / 2);
+  min-width: calc((100% - 75%) / 2 - 20px);
+  width: calc((100% - 800px) / 2 - 20px);
   top: 0;
   right: 0;
 }
@@ -321,6 +329,9 @@ main .actionBox li span {
 
 footer {
   min-height: 5vh;
+}
+footer p {
+  text-align: center;
 }
 
 .box {

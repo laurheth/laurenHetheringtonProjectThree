@@ -18,7 +18,7 @@
                 "canPickUp": true
             },
             "etchings": {
-                "itemDescription": "Scratched into the walls are the words 'Help, I'm trapped in a JavaScript Factory'. Who could have written this?"
+                "itemDescription": "Scratched into the walls are the words \"Help, I'm trapped in a JavaScript Factory\". Who could have written this?"
             }
         },
         "actions": [
@@ -122,7 +122,7 @@
                 "itemDescription": "This 'coal' is extremely similar to the coal you know and love, but upon closer inspection doesn't quite match it. The shape is wrong, and it kind of smells like... cat?"
             },
             "murals": {
-                "itemDescription": "These murals are enormous depictions of creatures with enormous horns, and red eyes. They all seem to be smiling. Text below the murals reads 'Praise be to floats! Hail to clearfix!'."
+                "itemDescription": "These murals are enormous depictions of creatures with enormous horns, and red eyes. They all seem to be smiling. Text below the murals reads \"Praise be to floats! Hail to clearfix!\"."
             }
         },
         "actions" : [
@@ -132,7 +132,7 @@
                 "action": "Walk east and exit this vile place.",
                 "result": "You start to walk east, when suddenly a small gray haired creature appears...",
                 "forceDescription": [
-                    "It is a cat! Small, gray haired. Your first instinct is to walk towards them, when they glance towards you and you see their eyes glow red like embers. Smoke billows from them at their ever breath.",
+                    "It is a cat! Small, gray haired. Your first instinct is to walk towards them, when they glance towards you and you see their eyes glow red like embers. Smoke billows from them at their every breath.",
                     "At the sight of you, their tail wiggles. They let out a rumbling sound that shakes your core, like a monstrous cacophany echoing from the deepest, darkest abyss:",
                     "\"MEOW!!! =^.^=\""
                 ],
@@ -152,7 +152,8 @@
         "name": "The Cat Demon",
         "description": "Sitting before you is the most fiendish cat you have ever seen. With long gray hair, and eyes that glow like the pits of hell itself.",
         "img": "https://placekitten.com/405/405",
-        "actions": []
+        "actions": [
+        ]
     },
     "outside": {
         "name": "Freedom!",

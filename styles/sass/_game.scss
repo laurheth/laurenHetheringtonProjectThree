@@ -7,6 +7,14 @@
     }
 }
 
+img {
+    box-shadow: -$shadow $shadow 0 $mainAccent;
+}
+
+.shadowRight {
+    box-shadow: $shadow $shadow 0 $mainAccent;
+}
+
 body {
     position: relative;
     background: $mainDark;
@@ -93,8 +101,8 @@ main {
     }
     aside {
         position: absolute;
-        min-width: calc((100% - #{$wrapperWidth}) / 2);
-        width: calc((100% - #{$wrapperMaxWidth}) / 2);
+        min-width: calc((100% - #{$wrapperWidth}) / 2 - #{$columnSpace});
+        width: calc((100% - #{$wrapperMaxWidth}) / 2 - #{$columnSpace});
         top: 0;
         right: 0;
     }
@@ -111,6 +119,9 @@ main {
 }
 footer {
     min-height: 5vh;
+    p {
+        text-align: center;
+    }
 }
 
 .box {
