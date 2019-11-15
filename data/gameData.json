@@ -4,6 +4,8 @@
     "examineAction": "Examine the",
     "pickupAction": "Pick up the",
     "emptyPockets": "Your pockets are empty.",
+    "startLocation": "dungeonCell",
+    "firstMessage": "You awaken after what feels like a very long slumber...",
     "dungeonCell": {
         "name": "Dungeon Cell",
         "description": "You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. There's strange etchings carved into the wall above the cell's bed. You have no recollection of how you got here, but it probably kind of sucked.",
