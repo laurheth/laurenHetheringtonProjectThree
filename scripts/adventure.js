@@ -199,6 +199,7 @@ const adventureApp = {
                 action = act;
             }
         });
+        let forceDescription='';
         if (action !== null) {
             if (!('examineRoom' in action)) {
                 action.examineRoom=false;
@@ -208,18 +209,28 @@ const adventureApp = {
                 this.itemDictionary[action.addInventory] = this.data[this.player.location].items[action.addInventory].itemDescription;
                 delete this.data[this.player.location].items[action.addInventory];
             }
+            if ('removeInventory' in action) {
+                this.player.remove('inventory',action.removeInventory);
+            }
             if ('addFlag' in action) {
                 this.player.add('flags',action.addFlag);
+            }
+            if ('removeFlag' in action) {
+                this.player.remove('flags',action.removeInventory);
             }
             if ('setLocation' in action) {
                 this.player.location = action.setLocation;
                 action.examineRoom=true;
             }
-            this.display(`${action.result}`,action.examineRoom);
+            if ('forceDescription' in action) {
+                forceDescription = action.forceDescription;
+            }
+            this.display(`${action.result}`,action.examineRoom,null,forceDescription);
         }
     },
 
-    itemInteract: function(item, actionString) {
+    itemInteract: function(item) {
+        const actionString = `You ${this.data.examineAction.toLowerCase()} the ${item}...`;
         let itemActionList = null;
         let itemDescription='';
         console.log(item);
