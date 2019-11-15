@@ -145,6 +145,94 @@
                 "action": "Talk to the cat demon.",
                 "result": "Uneasily, you approach the cat demon...",
                 "setLocation": "catDemon"
+            },
+            {
+                "action": "Walk north towards the mysterious other room.",
+                "result": "You walk north through the archway, into a strange room...",
+                "setLocation": "puzzleRoom"
+            }
+        ]
+    },
+    "puzzleRoom": {
+        "name": "Clockwork Computer Room",
+        "conditionalDescriptions": [
+            {
+                "if":["powerButton"],
+                "ifNot":["treatDeposited"],
+                "description": "This strange room is dominated by an enormous contraption. It has hundreds of cogs and gears, spinning wildly. A steam motor chugs along, periodically letting out a loud tooting sound, and several levers stick out for a user to operate. There is a cacophony of sound, almost musical, while the machine works towards whatever strange purpose it might have."
+            },
+            {
+                "ifNot": ["powerButton"],
+                "description": "This strange room is dominated by an enormous contraption. It has hundred of cogs, and an enormous water tank. It looks as though it hasn't been turned on in decades."
+            },
+            {
+                "ifNot":["treatDeposited"],
+                "description": "At the base on the machine is an empty dish, covered with eons old claw marks."
+            },
+            {
+                "if": ["treatDeposited"],
+                "description": "This strange room is dominated by an enormous contraption. It has hundred of cogs, and an enormous water tank. Steam is venting from the machine as it cools down from its recent activity."
+            },
+            {
+                "if": ["kitty treat"],
+                "description": "At the base of the machine is an empty dish. You suspect it has received its quota of treats for the day."
+            }
+        ],
+        "actions": [
+            {
+                "if": ["treatDeposited"],
+                "ifNot": ["kitty treat"],
+                "action": "Take the kitty treat.",
+                "result": "You pick up the kitty treat! You can feel it pulse in your hands with unholy magic.",
+                "description": "You notice a large and juicy looking kitty treat in the machine's dish!",
+                "addInventory": "kitty treat",
+                "itemDescription": "It is a big and juicy kitty treat. It is ball shaped and brown in colour. Disconcertingly, the smell reminds you of the souls of the damned."
+            },
+            {
+                "ifNot": ["powerButton"],
+                "description": "There is a big red button in the middle of the machine.",
+                "action": "Push the big red button.",
+                "result": "You push the big red button. With a lound creak, the machine begins to operate! Centuries old clockwork bursts into motion, and you are almost deafned by the sound of venting steam!",
+                "addFlag": "powerButton",
+                "examineRoom": true
+            },
+            {
+                "ifNot": ["treatDeposited","redLever"],
+                "if": ["powerButton"],
+                "description": "The end of a red lever glows, inviting you to pull it.",
+                "action": "Pull the red lever.",
+                "result": "You pull the red lever. It's light goes out. A yellow lever and a blue lever light up!",
+                "addFlag": "redLever"
+            },
+            {
+                "ifNot": ["treatDeposited","yellowLever"],
+                "if": ["redLever"],
+                "description": "One of the yellow levers is glowing, ready to be pulled.",
+                "action": "Pull the yellow lever.",
+                "result": "You pull the yellow lever. It's light goes out. The blue lever remains on, and the red lever reactivates!",
+                "addFlag": "yellowLever"
+            },
+            {
+                "ifNot": ["treatDeposited","blueLever"],
+                "if": ["yellowLever"],
+                "description": "The blue lever is glowing!",
+                "action": "Pull the blue lever.",
+                "result": "You pull the blue lever. It's light goes out. The big red button in the center of the machine starts to flash!",
+                "addFlag": "blueLever"
+            },
+            {
+                "ifNot": ["treatDeposited"],
+                "if": ["blueLever"],
+                "description": "The big red button is flashing rapidly!",
+                "action": "Push the big red button again.",
+                "result": "You push the big red button! With a thunk, an object is deposited into the bowl beneath the machine, and the whole contraption grinds to a halt!",
+                "addFlag": "treatDeposited",
+                "examineRoom": true
+            },
+            {
+                "action": "Return to the atrium.",
+                "result": "You walk through the archway and return to the atrium...",
+                "setLocation": "atrium"
             }
         ]
     },

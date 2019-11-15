@@ -30,25 +30,35 @@ const adventureApp = {
         },
         
         // Add to inventory or flags
-        add: function(type, item) {
+        add: function(type, items) {
             if (type in this && typeof this[type] === 'object') {
-                if (item in this[type]) {
-                    this[type][item]++;
+                if (!Array.isArray(items)) {
+                    items = [items];
                 }
-                else {
-                    this[type][item]=1;
-                }
+                items.forEach((item) => {
+                    if (item in this[type]) {
+                        this[type][item]++;
+                    }
+                    else {
+                        this[type][item]=1;
+                    }
+                });
             }
         },
         // Remove from inventory or flags. If all=true, remove all of item.
-        remove: function(type, item, all=false) {
+        remove: function(type, items, all=false) {
             if (type in this && typeof this[type] === 'object') {
-                if (item in this[type]) {
-                    this[type][item]--;
-                    if (this[type][item] <= 0 || all) {
-                        delete this[type][item];
-                    }
+                if (!Array.isArray(items)) {
+                    items = [items];
                 }
+                items.forEach((item) => {
+                    if (item in this[type]) {
+                        this[type][item]--;
+                        if (this[type][item] <= 0 || all) {
+                            delete this[type][item];
+                        }
+                    }
+                });
             }
         },
     },
@@ -241,9 +251,13 @@ const adventureApp = {
                     this.itemDictionary[action.addInventory] = `This is a ${action.addInventory}.`;
                 }
             }
+            let removeAll=false;
+            if ('removeAll' in action && action.removeAll) {
+                removeAll=true;
+            }
             // Does this remove inventory items?
             if ('removeInventory' in action) {
-                this.player.remove('inventory',action.removeInventory);
+                this.player.remove('inventory',action.removeInventory,removeAll);
             }
             // Does this add a flag?
             if ('addFlag' in action) {
@@ -251,7 +265,7 @@ const adventureApp = {
             }
             // Does this remove a flag?
             if ('removeFlag' in action) {
-                this.player.remove('flags',action.removeInventory);
+                this.player.remove('flags',action.removeInventory,removeAll);
             }
             // Does this move the player to a new location?
             if ('setLocation' in action) {
@@ -312,7 +326,7 @@ const adventureApp = {
                 method='append';
             }
         }
-        
+
         // Add to the action box.
         this.$actionBox[method](`
                 <li>
