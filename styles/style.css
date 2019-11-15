@@ -203,6 +203,7 @@ body {
   margin: 0 auto;
   width: 90%;
   max-width: 800px;
+  position: relative;
 }
 
 img {
@@ -220,12 +221,22 @@ img {
     opacity: 1;
   }
 }
-img, .shadow {
+.shadow {
   box-shadow: -10px 10px 0 #ff3333;
 }
 
 .shadowRight {
   box-shadow: 10px 10px 0 #ff3333;
+}
+
+.cardBackground {
+  position: absolute;
+  top: -15px;
+  bottom: -15px;
+  left: -15px;
+  right: -15px;
+  z-index: -10;
+  background: #160016;
 }
 
 .reverse.row {
@@ -281,6 +292,9 @@ ul {
   text-transform: capitalize;
 }
 ul i {
+  color: #ff3333;
+}
+ul .fa-check-square {
   color: #ffdd33;
 }
 
@@ -305,7 +319,6 @@ header h1 {
 
 main {
   min-height: 85vh;
-  position: relative;
 }
 main h2 {
   margin-bottom: 15px;

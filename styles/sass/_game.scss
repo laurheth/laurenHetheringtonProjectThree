@@ -7,12 +7,22 @@
     }
 }
 
-img, .shadow {
+.shadow {
     box-shadow: -$shadow $shadow 0 $mainAccent;
 }
 
 .shadowRight {
     box-shadow: $shadow $shadow 0 $mainAccent;
+}
+
+.cardBackground {
+    position: absolute;
+    top: -$cardEdge;
+    bottom: -$cardEdge;
+    left: -$cardEdge;
+    right: -$cardEdge;
+    z-index: -10;
+    background: lighten($mainDark,1%);
 }
 
 .reverse.row {
@@ -67,6 +77,9 @@ ul {
     padding-left: 20px;
     text-transform: capitalize;
     i {
+        color: $mainAccent;
+    }
+    .fa-check-square {
         color: $secondaryAccent;
     }
 }
@@ -95,7 +108,6 @@ header {
 
 main {
     min-height: 85vh;
-    position: relative;
     h2 {
         margin-bottom: 15px;
     }
