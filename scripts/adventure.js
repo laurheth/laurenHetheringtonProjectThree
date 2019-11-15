@@ -7,59 +7,7 @@ const adventureApp = {
     itemDictionary: {},
 
     // Game data! This object will be a beast to write, so I hope you enjoy it.
-    data: {
-        gameName: "Escape from Project Three",
-        lookAction: "Look around again.",
-        examineAction: "Examine the",
-        pickupAction: "Pick up the",
-        emptyPockets: "Your pockets are empty.",
-        dungeonCell: {
-            name: 'Dungeon Cell',
-            description: `You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. You have no recollection of how you got here, but it probably kind of sucked.`,
-            img: `https://placekitten.com/500/500`,
-            items: {
-                key: {
-                    description: `On the ground, there is a golden key. It glistens in the moonlight.`,
-                    itemDescription: `It is a shiny gold key. It is very well crafted, and very heavy. It feels like it would probably pair well with a massive cell door.`,
-                    result: `You pick up the key, and feel empowered about your future.`,
-                    canPickUp: true
-                }
-            },
-            actions: [
-                {
-                    ifNot: [`cellUnlocked`],
-                    action: `Open cell door.`,
-                    result: `You try to open the door, but it is locked shut. It's wrought iron bars will not yield, however hard you pull!`
-                },
-                {
-                    if: [`key`],
-                    ifNot: [`cellUnlocked`],
-                    action: `Unlock cell door using the key.`,
-                    result: `You unlock the cell door. It makes a very satisfying clinking sound.`,
-                    addFlag: `cellUnlocked`
-                },
-                {
-                    if: [`cellUnlocked`],
-                    ifNot: [`cellOpen`],
-                    action: `Open cell door.`,
-                    result: `The cell door swings open!`,
-                    addFlag: `cellOpen`
-                },
-                {
-                    if: [`cellOpen`],
-                    action: `Walk out through cell door.`,
-                    result: `You walk out of the cell!`,
-                    setLocation: `outside`,
-                }
-            ],
-        },
-        outside: {
-            name: "Freedom!",
-            description: `You are outside! You have escaped from the dungeon and are free!`,
-            img: `https://placekitten.com/400/400`,
-            actions: []
-        }
-    },
+    data: null,
 
     // Player data
     player: {
@@ -275,7 +223,7 @@ const adventureApp = {
         let itemActionList = null;
         let itemDescription='';
         console.log(item);
-        if (item in this.data[this.player.location].items) {
+        if ('items' in this.data[this.player.location] && item in this.data[this.player.location].items) {
             itemDescription = this.data[this.player.location].items[item].itemDescription;
             if (this.data[this.player.location].items[item].canPickUp) {
                 itemActionList = [{
@@ -306,6 +254,25 @@ const adventureApp = {
         })
     },
 
+    loadGameData: function() {
+        $.ajax({
+            url: 'data/gameData.json',
+            method: 'GET',
+            dataType: 'json'
+        }).then((result) => {
+            $('#curtain').fadeOut('slow');
+            this.data=result;
+            this.startGame();
+        })
+    },
+
+    startGame: function() {
+        this.events();
+        $('h1').text(this.data.gameName);
+        window.document.title=this.data.gameName;
+        this.display(`You awaken after what feels like a very long slumber...`);
+    },
+
     // Init method
     init: function() {
         this.$imgContainer = $('#imgContainer');
@@ -313,11 +280,7 @@ const adventureApp = {
         this.$actionBox = $('#actionBox');
         this.$itemBox = $('#itemBox');
         this.$locationTitle = $('#locationTitle');
-
-        this.events();
-
-        $('h1').text(this.data.gameName);
-        this.display(`You awaken after what feels like a very long slumber...`);
+        this.loadGameData();
     }
 };
 
