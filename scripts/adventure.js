@@ -4,6 +4,7 @@ const adventureApp = {
     $actionBox: null,
     $itemBox: null,
     $locationTitle: null,
+    itemDictionary: {},
 
     // Game data! This object will be a beast to write, so I hope you enjoy it.
     data: {
@@ -12,7 +13,6 @@ const adventureApp = {
         examineAction: "Examine the",
         pickupAction: "Pick up the",
         emptyPockets: "Your pockets are empty.",
-        itemDictionary: {},
         dungeonCell: {
             name: 'Dungeon Cell',
             description: `You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. You have no recollection of how you got here, but it probably kind of sucked.`,
@@ -26,13 +26,6 @@ const adventureApp = {
                 }
             },
             actions: [
-                // {
-                //     ifNot: [`key`],
-                //     action: `Pick up key.`,
-                //     description: `On the ground, there is a golden key. It glistens in the moonlight.`,
-                //     result: `You pick up the key, and feel empowered about your future.`,
-                //     addInventory: `key`
-                // },
                 {
                     ifNot: [`cellUnlocked`],
                     action: `Open cell door.`,
@@ -245,7 +238,7 @@ const adventureApp = {
             const item = actionDone.match(itemRegex)[1];
             console.log(item);
             this.player.add('inventory',item);
-            this.data.itemDictionary[item] = this.data[this.player.location].items[item].itemDescription;
+            this.itemDictionary[item] = this.data[this.player.location].items[item].itemDescription;
             delete this.data[this.player.location].items[item];
             this.display(`You ${actionDone.toLowerCase()}`,false);
             return;
@@ -264,7 +257,7 @@ const adventureApp = {
             }
             if ('addInventory' in action) {
                 this.player.add('inventory',action.addInventory);
-                this.data.itemDictionary[action.addInventory] = this.data[this.player.location].items[action.addInventory].itemDescription;
+                this.itemDictionary[action.addInventory] = this.data[this.player.location].items[action.addInventory].itemDescription;
                 delete this.data[this.player.location].items[action.addInventory];
             }
             if ('addFlag' in action) {
@@ -292,8 +285,8 @@ const adventureApp = {
                 }];
             }
         }
-        if (item in this.data.itemDictionary) {
-            itemDescription = this.data.itemDictionary[item];
+        if (item in this.itemDictionary) {
+            itemDescription = this.itemDictionary[item];
         }
         // console.log('sdfg');
         this.display(actionString,false,itemActionList,itemDescription,item);
