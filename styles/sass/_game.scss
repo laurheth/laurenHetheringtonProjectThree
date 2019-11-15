@@ -7,12 +7,16 @@
     }
 }
 
-img {
+img, .shadow {
     box-shadow: -$shadow $shadow 0 $mainAccent;
 }
 
 .shadowRight {
     box-shadow: $shadow $shadow 0 $mainAccent;
+}
+
+.reverse.row {
+    flex-direction: row-reverse;
 }
 
 body {
@@ -38,7 +42,7 @@ body {
 
 a {
     position: relative;
-    color: $mainAccent;
+    color: $secondaryAccent;
 }
 
 a::before {
@@ -62,6 +66,9 @@ a:focus::before {
 ul {
     padding-left: 20px;
     text-transform: capitalize;
+    i {
+        color: $secondaryAccent;
+    }
 }
 
 header {
@@ -73,13 +80,14 @@ header {
         // margin: 0 auto;
         text-align: center;
         text-shadow: 4px 4px 0 $mainAccent;
-        font-size: 50px;
+        font-size: 2.5rem;
     }
 }
 
 .row {
     display: flex;
     justify-content: space-between;
+    margin-bottom: $columnSpace;
     .column {
         width: calc(50% - #{$columnSpace} / 2 );
     }
@@ -99,13 +107,6 @@ main {
         font-weight: bold;
         color: $secondaryAccent;
     }
-    aside {
-        position: absolute;
-        min-width: calc((100% - #{$wrapperWidth}) / 2 - #{$columnSpace});
-        width: calc((100% - #{$wrapperMaxWidth}) / 2 - #{$columnSpace});
-        top: 0;
-        right: 0;
-    }
     .actionBox{
         padding: 0;
         li {
@@ -119,6 +120,7 @@ main {
 }
 footer {
     min-height: 5vh;
+    margin-top: 30px;
     p {
         text-align: center;
     }
@@ -126,6 +128,6 @@ footer {
 
 .box {
     border: 4px solid $mainAccent;
-    display: inline-block;
+    // display: inlinblock;
     padding: 10px;
 }

@@ -201,7 +201,7 @@ body {
 
 .wrapper {
   margin: 0 auto;
-  width: 75%;
+  width: 90%;
   max-width: 800px;
 }
 
@@ -220,12 +220,16 @@ img {
     opacity: 1;
   }
 }
-img {
+img, .shadow {
   box-shadow: -10px 10px 0 #ff3333;
 }
 
 .shadowRight {
   box-shadow: 10px 10px 0 #ff3333;
+}
+
+.reverse.row {
+  flex-direction: row-reverse;
 }
 
 body {
@@ -251,7 +255,7 @@ body {
 
 a {
   position: relative;
-  color: #ff3333;
+  color: #ffdd33;
 }
 
 a::before {
@@ -276,6 +280,9 @@ ul {
   padding-left: 20px;
   text-transform: capitalize;
 }
+ul i {
+  color: #ffdd33;
+}
 
 header {
   min-height: 10vh;
@@ -284,12 +291,13 @@ header {
 header h1 {
   text-align: center;
   text-shadow: 4px 4px 0 #ff3333;
-  font-size: 50px;
+  font-size: 2.5rem;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 .row .column {
   width: calc(50% - 20px / 2 );
@@ -310,13 +318,6 @@ main .lastAction {
   font-weight: bold;
   color: #ffdd33;
 }
-main aside {
-  position: absolute;
-  min-width: calc((100% - 75%) / 2 - 20px);
-  width: calc((100% - 800px) / 2 - 20px);
-  top: 0;
-  right: 0;
-}
 main .actionBox {
   padding: 0;
 }
@@ -329,6 +330,7 @@ main .actionBox li span {
 
 footer {
   min-height: 5vh;
+  margin-top: 30px;
 }
 footer p {
   text-align: center;
@@ -336,6 +338,24 @@ footer p {
 
 .box {
   border: 4px solid #ff3333;
-  display: inline-block;
   padding: 10px;
+}
+
+@media (max-width: 800px) {
+  .wrapper {
+    width: calc(100% - 40px);
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 600px) {
+  .row {
+    flex-wrap: wrap;
+  }
+  .row .column {
+    width: 100%;
+    margin: 20px 0;
+  }
 }
