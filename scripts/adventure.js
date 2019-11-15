@@ -312,6 +312,7 @@ const adventureApp = {
                 method='append';
             }
         }
+        
         // Add to the action box.
         this.$actionBox[method](`
                 <li>
