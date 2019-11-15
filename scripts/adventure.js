@@ -9,19 +9,30 @@ const adventureApp = {
     data: {
         gameName: "Escape from Project Three",
         lookAction: "Look around again.",
+        examineAction: "Examine the",
+        pickupAction: "Pick up the",
         emptyPockets: "Your pockets are empty.",
+        itemDictionary: {},
         dungeonCell: {
             name: 'Dungeon Cell',
             description: `You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. You have no recollection of how you got here, but it probably kind of sucked.`,
             img: `https://placekitten.com/500/500`,
-            actions: [
-                {
-                    ifNot: [`key`],
-                    action: `Pick up key.`,
+            items: {
+                key: {
                     description: `On the ground, there is a golden key. It glistens in the moonlight.`,
+                    itemDescription: `It is a shiny gold key. It is very well crafted, and very heavy. It feels like it would probably pair well with a massive cell door.`,
                     result: `You pick up the key, and feel empowered about your future.`,
-                    addInventory: `key`
-                },
+                    canPickUp: true
+                }
+            },
+            actions: [
+                // {
+                //     ifNot: [`key`],
+                //     action: `Pick up key.`,
+                //     description: `On the ground, there is a golden key. It glistens in the moonlight.`,
+                //     result: `You pick up the key, and feel empowered about your future.`,
+                //     addInventory: `key`
+                // },
                 {
                     ifNot: [`cellUnlocked`],
                     action: `Open cell door.`,
@@ -30,7 +41,7 @@ const adventureApp = {
                 {
                     if: [`key`],
                     ifNot: [`cellUnlocked`],
-                    action: `Unlock cell door.`,
+                    action: `Unlock cell door using the key.`,
                     result: `You unlock the cell door. It makes a very satisfying clinking sound.`,
                     addFlag: `cellUnlocked`
                 },
@@ -105,12 +116,15 @@ const adventureApp = {
     },
 
     // Display room. Prepend with the result of the previously taken action.
-    display: function(lastActionMessage='',includeDescription=true) {
+    display: function(lastActionMessage='',includeDescription=true, forceActionList=null, forceDescription='', item='') {
         let locationObj = this.data[this.player.location];
         this.$locationTitle.text(locationObj.name);
         let description = '';
         if (lastActionMessage !== '') {
             description += `<p class="lastAction">${lastActionMessage}</p>`;
+        }
+        if (forceDescription !== '') {
+            description += `<p>${forceDescription}</p>`;
         }
         if (includeDescription) {
             description += `<p>${locationObj.description}</p>`;
@@ -119,20 +133,58 @@ const adventureApp = {
 
         this.$actionBox.empty();
         
+        let actionList;
+        if (forceActionList) {
+            actionList = forceActionList;
+        }
+        else {
+            actionList = locationObj.actions;
+            // Item related actions, only if getting default room actions and not interacting with another item
+            if (item==='') {
+                // locationObj.items.forEach((item) => {
+
+                // });
+                for (let item in locationObj.items) {
+                    // console.log(item);
+                    if ('description' in locationObj.items[item]) {
+                        description += `<p>${locationObj.items[item].description}</p>`;
+                    }
+                    this.$actionBox.append(`
+                        <li>
+                            <a class="item" data-item="${item}" href="#">
+                                ${this.data.examineAction} ${item}.
+                            </a>
+                        </li>
+                    `)
+
+                }
+            }
+        }
         // Using an arrow function to keep this === the this I want (adventureApp)
-        locationObj.actions.filter((action) => {
+        actionList.filter((action) => {
+            // Exclude actions requiring an item in your inventory
+            if (!forceActionList) {
+                if ('if' in action && (action.if[0] in this.player.inventory) && !(action.if[0] === item)) {
+                    return false;
+                }
+                // If interacting with an item, exclude actions not involving the item
+                if (item !== '') {
+                    if ('if' in action && !(action.if[0] === item) || !('if' in action)) {
+                        return false;
+                    }
+                }
+            }
             return this.checkValidity(action);
         }).forEach((action) => {
-            // console.log(action);
             if ('description' in action) {
                 description += `<p>${action.description}</p>`;
             }
             
             const actionElement = `
             <li>
-            <a href="#">
-            ${action.action}
-            </a>
+                <a class="action" href="#">
+                    ${action.action}
+                </a>
             </li>
             `;
             this.$actionBox.append(actionElement);
@@ -148,7 +200,7 @@ const adventureApp = {
             // this.player.remove('flags','justLooked',true);
             this.$actionBox.append(`
                 <li>
-                    <a href="#">
+                    <a class="action" href="#">
                         ${this.data.lookAction}
                     </a>
                 </li>
@@ -166,7 +218,7 @@ const adventureApp = {
             Object.keys(this.player.inventory).forEach((item) => {
                 this.$itemBox.append(`
                     <li>
-                        <a href="#">
+                        <a class="item" data-item="${item}" href="#">
                             ${item}
                         </a>
                     </li>
@@ -179,12 +231,27 @@ const adventureApp = {
     },
 
     doAction: function(actionDone) {
+        // console.log(actionDone);
         // Special case, "look around"
         if (actionDone.trim() === this.data.lookAction) {
             this.display(`You ${this.data.lookAction.toLowerCase()}...`, true);
+            return;
         }
 
-        // Figure out action and then run it
+        // Special case, pick up
+        if (actionDone.trim().indexOf(this.data.pickupAction) === 0) {
+            // pick up the item, as expected
+            const itemRegex = new RegExp(`${this.data.pickupAction} ([a-z]+).`,'i');
+            const item = actionDone.match(itemRegex)[1];
+            console.log(item);
+            this.player.add('inventory',item);
+            this.data.itemDictionary[item] = this.data[this.player.location].items[item].itemDescription;
+            delete this.data[this.player.location].items[item];
+            this.display(`You ${actionDone.toLowerCase()}`,false);
+            return;
+        }
+
+        // Figure out action and then run it from the room list
         let action=null;
         this.data[this.player.location].actions.forEach((act) => {
             if (act.action === actionDone.trim() && this.checkValidity(act)) {
@@ -197,6 +264,8 @@ const adventureApp = {
             }
             if ('addInventory' in action) {
                 this.player.add('inventory',action.addInventory);
+                this.data.itemDictionary[action.addInventory] = this.data[this.player.location].items[action.addInventory].itemDescription;
+                delete this.data[this.player.location].items[action.addInventory];
             }
             if ('addFlag' in action) {
                 this.player.add('flags',action.addFlag);
@@ -209,12 +278,39 @@ const adventureApp = {
         }
     },
 
+    itemInteract: function(item, actionString) {
+        let itemActionList = null;
+        let itemDescription='';
+        console.log(item);
+        if (item in this.data[this.player.location].items) {
+            itemDescription = this.data[this.player.location].items[item].itemDescription;
+            if (this.data[this.player.location].items[item].canPickUp) {
+                itemActionList = [{
+                    action: `${this.data.pickupAction} ${item}.`,
+                    result: this.data[this.player.location].items[item].result,
+                    addInventory: item,
+                }];
+            }
+        }
+        if (item in this.data.itemDictionary) {
+            itemDescription = this.data.itemDictionary[item];
+        }
+        // console.log('sdfg');
+        this.display(actionString,false,itemActionList,itemDescription,item);
+    },
+
     events: function() {
-        $('#actionBox').on('click','a',function(event) {
+        $('#actionBox').on('click','a.action',function(event) {
             event.preventDefault();
 
             adventureApp.doAction($(this).text());
         });
+
+        $('#actionBox, #itemBox').on('click', 'a.item', function(event) {
+            event.preventDefault();
+            const itemName = $(this).data('item');
+            adventureApp.itemInteract(itemName);
+        })
     },
 
     // Init method
