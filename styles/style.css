@@ -266,6 +266,7 @@ a:focus::before {
 
 ul {
   padding-left: 20px;
+  text-transform: capitalize;
 }
 
 header {
@@ -313,6 +314,9 @@ main .actionBox {
 }
 main .actionBox li {
   list-style: none;
+}
+main .actionBox li span {
+  color: #eeffee;
 }
 
 footer {
