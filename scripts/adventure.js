@@ -92,7 +92,17 @@ const adventureApp = {
         }
         // If including the full room description, add it
         if (includeDescription) {
-            description += `<p>${locationObj.description}</p>`;
+            if ('description' in locationObj) {
+                description += `<p>${locationObj.description}</p>`;
+            }
+            if ('conditionalDescriptions' in locationObj) {
+                locationObj.conditionalDescriptions.forEach((thisDescription) => {
+                    console.log(thisDescription);
+                    if (this.checkValidity(thisDescription)) {
+                        description += `<p>${thisDescription.description}</p>`;
+                    }
+                });
+            }
         }
 
         // Update the image
@@ -230,7 +240,6 @@ const adventureApp = {
                 else {
                     this.itemDictionary[action.addInventory] = `This is a ${action.addInventory}.`;
                 }
-                delete this.data[this.player.location].items[action.addInventory];
             }
             // Does this remove inventory items?
             if ('removeInventory' in action) {

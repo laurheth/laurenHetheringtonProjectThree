@@ -71,9 +71,41 @@
     },
     "dungeonHall": {
         "name": "Dungeon Hallway",
-        "description": "The hallway beyond the cell door is dark and foreboding. There are three cells in addition to the one you awakened in. Mysterious glowing stones embedded into the walls illuminate the hallway enough for you to see.",
         "img": "https://placekitten.com/402/402",
-        "actions": []
+        "conditionalDescriptions" : [
+            {
+                "if":["torch"],
+                "description": "Your torchlight flickers down the otherwise barely lit hallway. There are a total of four dungeon cells here, in addition to the one you awakened in. The floor and walls are smoothly cut granite"
+            },
+            {
+                "ifNot":["torch"],
+                "description": "The hallway beyond the cell door is dark and foreboding. From the moonlight coming in through the windows, you can see that there are three cells in addition to the one you awakened in. However, it is far too dark to see anything else."
+            }
+        ],
+        "actions": [
+            {
+                "ifNot":["torch"],
+                "description": "There is an unlit torch affixed to the wall.",
+                "action": "Examine the torch.",
+                "result": "You take a look at the torch...",
+                "forceDescription": "It's a short iron staff with one end wrapped in cloth. It looks like it's soaked with a flammable liquid, if only you could light it..."
+            },
+            {
+                "if":["lighter"],
+                "ifNot":["torch"],
+                "action": "Ignite the torch with the lighter.",
+                "needsItem": true,
+                "result": "You set the torch aflame!",
+                "examineRoom": true,
+                "addInventory": "torch",
+                "itemDescription": "It's a short iron staff with one end aflame. It's light helps you see your surroundings."
+            },
+            {
+                "action": "Return to the dungeon cell.",
+                "result": "You walk back into your former dungeon cell. Being here sends shivers down your spine.",
+                "setLocation": "dungeonCell"
+            }
+        ]
     },
     "outside": {
         "name": "Freedom!",
