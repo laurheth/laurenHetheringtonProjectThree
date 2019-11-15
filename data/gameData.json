@@ -75,7 +75,7 @@
         "conditionalDescriptions" : [
             {
                 "if":["torch"],
-                "description": "Your torchlight flickers down the otherwise barely lit hallway. There are a total of four dungeon cells here, in addition to the one you awakened in. The floor and walls are smoothly cut granite"
+                "description": "Your torchlight flickers down the otherwise barely lit hallway. There are a total of four dungeon cells here, in addition to the one you awakened in. The floor and walls are smoothly cut granite. In the light, you can see that the hallway extends to the north, before taking a hard right turn."
             },
             {
                 "ifNot":["torch"],
@@ -104,8 +104,55 @@
                 "action": "Return to the dungeon cell.",
                 "result": "You walk back into your former dungeon cell. Being here sends shivers down your spine.",
                 "setLocation": "dungeonCell"
+            },
+            {
+                "if": ["torch"],
+                "action": "Go north along the hallway.",
+                "result": "You walk north along the hallway, and turn the corner...",
+                "setLocation": "atrium"
             }
         ]
+    },
+    "atrium": {
+        "name": "The Atrium",
+        "img": "https://placekitten.com/403/403",
+        "description": "You find yourself in a large atrium. A glass covered skylight lets the light of the moon shimmer down into the area. Your torch light flickers along many large murals depicting creatures that almost look demonic. Four stone pillars hold the ceiling aloft, several storeys up. An archway leads into the hallways towards the dungeon cells, and another archway leads north towards another room. Small chunks of what appears to be coal litter the ground.",
+        "items": {
+            "coal": {
+                "itemDescription": "This 'coal' is extremely similar to the coal you know and love, but upon closer inspection doesn't quite match it. The shape is wrong, and it kind of smells like... cat?"
+            },
+            "murals": {
+                "itemDescription": "These murals are enormous depictions of creatures with enormous horns, and red eyes. They all seem to be smiling. Text below the murals reads 'Praise be to floats! Hail to clearfix!'."
+            }
+        },
+        "actions" : [
+            {
+                "ifNot": ["triedToLeave","catFriend"],
+                "description": "One large archway leads eastwards. You can smell the fresh forest air just beyond it. Could it be a way out?",
+                "action": "Walk east and exit this vile place.",
+                "result": "You start to walk east, when suddenly a small gray haired creature appears...",
+                "forceDescription": [
+                    "It is a cat! Small, gray haired. Your first instinct is to walk towards them, when they glance towards you and you see their eyes glow red like embers. Smoke billows from them at their ever breath.",
+                    "At the sight of you, their tail wiggles. They let out a rumbling sound that shakes your core, like a monstrous cacophany echoing from the deepest, darkest abyss:",
+                    "\"MEOW!!! =^.^=\""
+                ],
+                "addFlag": "triedToLeave"
+            },
+            {
+                "if": ["triedToLeave"],
+                "ifNot": ["catFriend"],
+                "description": "The cat demon sits directly between you and the dungeon exit. They block your way. You must find a way to appease the cat.",
+                "action": "Talk to the cat demon.",
+                "result": "Uneasily, you approach the cat demon...",
+                "setLocation": "catDemon"
+            }
+        ]
+    },
+    "catDemon": {
+        "name": "The Cat Demon",
+        "description": "Sitting before you is the most fiendish cat you have ever seen. With long gray hair, and eyes that glow like the pits of hell itself.",
+        "img": "https://placekitten.com/405/405",
+        "actions": []
     },
     "outside": {
         "name": "Freedom!",
