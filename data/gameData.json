@@ -19,9 +19,6 @@
             },
             "etchings": {
                 "itemDescription": "Scratched into the walls are the words 'Help, I'm trapped in a JavaScript Factory'. Who could have written this?"
-            },
-            "bed": {
-                "itemDescription": "The bed looks like it's been heavily used. How long have you been here?"
             }
         },
         "actions": [
@@ -31,6 +28,26 @@
                 "forceDescription": "The Moon glows bright in the night sky. It is a full Moon, illuminating a foreboding forest around this mysterious prison."
             },
             {
+                "ifNot": ["lighter"],
+                "action": "Examine the bed.",
+                "result": "You examine the bed...",
+                "forceDescription": [
+                    "The bed appears to have been heavily used. How long have you been here?",
+                    "You found a lighter hidden under the pillow!"
+                ],
+                "addInventory": "lighter",
+                "itemDescription": "A clunky brass lighter with a flip top. A pair of curly braces are etched into it's exterior."
+            },
+            {
+                "if": ["lighter"],
+                "action": "Examine the bed.",
+                "result": "You examine the bed...",
+                "forceDescription": [
+                    "The bed appears to have been heavily used. How long have you been here?",
+                    "There doesn't appear to be anything else hidden here."
+                ]
+            },
+            {
                 "ifNot": ["cellOpen"],
                 "action": "Open cell door.",
                 "result": "You try to open the door, but it is locked shut. It's wrought iron bars will not yield, however hard you pull!"
@@ -38,6 +55,7 @@
             {
                 "if": ["key"],
                 "ifNot": ["cellOpen"],
+                "needsItem": true,
                 "action": "Unlock cell door using the key.",
                 "result": "You unlock the cell door. It makes a very satisfying clinking sound. The cell door swings open!",
                 "addFlag": "cellOpen",

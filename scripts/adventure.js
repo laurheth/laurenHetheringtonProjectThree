@@ -83,7 +83,12 @@ const adventureApp = {
         }
         // If some additional description is included via forceDescription, add it in nest
         if (forceDescription !== '') {
-            description += `<p>${forceDescription}</p>`;
+            if (!Array.isArray(forceDescription)) {
+                forceDescription = [forceDescription];
+            }
+            forceDescription.forEach((text) => {
+                description += `<p>${text}</p>`;
+            });
         }
         // If including the full room description, add it
         if (includeDescription) {
@@ -119,13 +124,19 @@ const adventureApp = {
         actionList.filter((action) => {
             // If forceActionList is given, use it, no matter what (though still check for validity)
             if (!forceActionList) {
-                // Exclude actions requiring an item in your inventory, those are accessible via your inventory!
-                if ('if' in action && (action.if[0] in this.player.inventory) && !(action.if[0] === item)) {
-                    return false;
-                }
-                // If interacting with an item, exclude actions not involving the item
+                // If interacting with an item...
                 if (item !== '') {
-                    if ('if' in action && !(action.if[0] === item) || !('if' in action)) {
+                    // exclude actions not involving the item
+                    if ('if' in action && !(action.if.includes(item)) || !('if' in action)) {
+                        return false;
+                    }
+                    if (!('needsItem' in action && action.needsItem)) {
+                        return false;
+                    }
+                }
+                else {
+                    // if not interacting with an item, exlude actions requiring an item
+                    if ('needsItem' in action && action.needsItem) {
                         return false;
                     }
                 }
@@ -211,10 +222,14 @@ const adventureApp = {
                 action.examineRoom=false;
             }
             // Are we adding an inventory item via the action?
-            // FIXME update how definitions work in this case!
             if ('addInventory' in action) {
                 this.player.add('inventory',action.addInventory);
-                this.itemDictionary[action.addInventory] = this.data[this.player.location].items[action.addInventory].itemDescription;
+                if ('itemDescription' in action) {
+                    this.itemDictionary[action.addInventory] = action.itemDescription;
+                }
+                else {
+                    this.itemDictionary[action.addInventory] = `This is a ${action.addInventory}.`;
+                }
                 delete this.data[this.player.location].items[action.addInventory];
             }
             // Does this remove inventory items?
