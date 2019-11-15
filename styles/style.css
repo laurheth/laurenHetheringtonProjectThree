@@ -212,6 +212,14 @@ img {
   object-fit: contain;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 body {
   position: relative;
   background: #110011;
@@ -251,7 +259,8 @@ a::before {
   border-radius: 2px;
 }
 
-a:hover::before {
+a:hover::before,
+a:focus::before {
   width: 100%;
 }
 
@@ -286,6 +295,7 @@ main h2 {
 }
 main p {
   margin: 15px 0;
+  animation: fadeIn 1s linear forwards;
 }
 main .lastAction {
   font-weight: bold;
@@ -297,6 +307,12 @@ main aside {
   width: calc((100% - 800px) / 2);
   top: 0;
   right: 0;
+}
+main .actionBox {
+  padding: 0;
+}
+main .actionBox li {
+  list-style: none;
 }
 
 footer {

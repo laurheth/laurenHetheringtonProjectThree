@@ -1,3 +1,12 @@
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 body {
     position: relative;
     background: $mainDark;
@@ -37,7 +46,8 @@ a::before {
     border-radius: 2px;
 }
 
-a:hover::before {
+a:hover::before,
+a:focus::before {
     width: 100%;
 }
 
@@ -74,6 +84,7 @@ main {
     }
     p {
         margin: 15px 0;
+        animation: fadeIn 1s linear forwards;
     }
     .lastAction {
         font-weight: bold;
@@ -85,6 +96,16 @@ main {
         width: calc((100% - #{$wrapperMaxWidth}) / 2);
         top: 0;
         right: 0;
+    }
+    .actionBox{
+        padding: 0;
+        li {
+            span {
+                color: $mainLight;
+            }
+            list-style: none;
+        }
+
     }
 }
 footer {

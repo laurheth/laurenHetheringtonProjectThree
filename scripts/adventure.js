@@ -6,6 +6,8 @@ const adventureApp = {
     $locationTitle: null,
     itemDictionary: {},
 
+    doneActions: {},
+
     // Game data! This object will be a beast to write, so I hope you enjoy it.
     data: null,
 
@@ -90,13 +92,14 @@ const adventureApp = {
                     if ('description' in locationObj.items[item]) {
                         description += `<p>${locationObj.items[item].description}</p>`;
                     }
-                    this.$actionBox.append(`
-                        <li>
-                            <a class="item" data-item="${item}" href="#">
-                                ${this.data.examineAction} ${item}.
-                            </a>
-                        </li>
-                    `)
+                    this.addToActions(`${this.data.examineAction} ${item}.`,`item`,item);
+                    // this.$actionBox.append(`
+                    //     <li>
+                    //         <a class="item" data-item="${item}" href="#">
+                    //             ${this.data.examineAction} ${item}.
+                    //         </a>
+                    //     </li>
+                    // `)
 
                 }
             }
@@ -120,15 +123,15 @@ const adventureApp = {
             if ('description' in action) {
                 description += `<p>${action.description}</p>`;
             }
-            
-            const actionElement = `
-            <li>
-                <a class="action" href="#">
-                    ${action.action}
-                </a>
-            </li>
-            `;
-            this.$actionBox.append(actionElement);
+            this.addToActions(action.action,`action`);
+            // const actionElement = `
+            // <li>
+            //     <a class="action" href="#">
+            //         ${action.action}
+            //     </a>
+            // </li>
+            // `;
+            // this.$actionBox.append(actionElement);
         });
 
         // Did the player just look around a bit?
@@ -139,13 +142,14 @@ const adventureApp = {
         else {
             // Nope! Include this option!
             // this.player.remove('flags','justLooked',true);
-            this.$actionBox.append(`
-                <li>
-                    <a class="action" href="#">
-                        ${this.data.lookAction}
-                    </a>
-                </li>
-            `);
+            this.addToActions(this.data.lookAction,`action`);
+            // this.$actionBox.append(`
+            //     <li>
+            //         <a class="action" href="#">
+            //             ${this.data.lookAction}
+            //         </a>
+            //     </li>
+            // `);
         }
 
         // Force room description if for some reason that's NOTHING, because nothing sucks.
@@ -251,15 +255,46 @@ const adventureApp = {
         this.display(actionString,false,itemActionList,itemDescription,item);
     },
 
+    addToActions: function(action, type, item='') {
+        let symbol=`<i class="far fa-square"></i>`;
+        let method='prepend';
+        if (this.player.location in this.doneActions) {
+            if (action.trim() in this.doneActions[this.player.location]) {
+                symbol=`<i class="far fa-check-square"></i>`;
+                method='append';
+            }
+        }
+        console.log(action, method);
+        this.$actionBox[method](`
+                <li>
+                    <span>${symbol}</span>
+                    <a ${(type==='item') ? 'data-item="'+item+'"' : ''} class="${type}" href="#">
+                        ${action}
+                    </a>
+                </li>
+            `);
+    },
+
     events: function() {
         $('#actionBox').on('click','a.action',function(event) {
             event.preventDefault();
+
+            if (!(adventureApp.player.location in adventureApp.doneActions)) {
+                adventureApp.doneActions[adventureApp.player.location] = {};
+            }
+            adventureApp.doneActions[adventureApp.player.location][$(this).text().trim()]=true;
 
             adventureApp.doAction($(this).text());
         });
 
         $('#actionBox, #itemBox').on('click', 'a.item', function(event) {
             event.preventDefault();
+
+            if (!(adventureApp.player.location in adventureApp.doneActions)) {
+                adventureApp.doneActions[adventureApp.player.location] = {};
+            }
+            adventureApp.doneActions[adventureApp.player.location][$(this).text().trim()]=true;
+
             const itemName = $(this).data('item');
             adventureApp.itemInteract(itemName);
         })
