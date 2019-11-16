@@ -75,6 +75,8 @@ body {
             animation: rotateSelf 2s linear infinite;
             width: 10vw;
             height: 10vw;
+            min-width: 100px;
+            min-height: 100px;
             img {
                 border-radius: 50%;
             }
