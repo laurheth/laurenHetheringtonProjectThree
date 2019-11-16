@@ -126,7 +126,7 @@ const adventureApp = {
         }
 
         // Update the image
-        this.updateImage(imgSrc,imgAlt);
+        const imageUpdated = this.updateImage(imgSrc,imgAlt);
 
         // Empty the action box before we repopulate it
         this.$actionBox.empty();
@@ -210,6 +210,24 @@ const adventureApp = {
         else {
             this.$itemBox.append(`<li>${this.data.emptyPockets}</li>`);
         }
+
+        // Figure out scrolling
+        let offset=0;
+        // If the image has updated, we want to be able to see the image
+        if (imageUpdated) {
+            offset = this.$imgContainer.offset().top;// - $(document).scrollTop();
+        }
+        // Otherwise, we mainly just want to see the text
+        else {
+            offset = this.$locationTitle.offset().top;// - $(document).scrollTop();
+        }
+
+        // Only scroll up if the player is currently scrolled past the chosen scroll-point
+        if (offset < $(document).scrollTop()) {
+            $(document).scrollTop(offset);
+        }
+
+
     },
 
     // Main action parser. Accepts the text shown in the "actions" anchors.
@@ -363,7 +381,9 @@ const adventureApp = {
         if (imgSrc !== this.lastSetImage) {
             this.$imgContainer.html(`<img src=${imgSrc} alt="${alt}">`);
             this.lastSetImage = imgSrc;
+            return true;
         }
+        return false;
     },
 
     // Update doneActions
