@@ -197,6 +197,7 @@ html {
 body {
   font-size: 0.9rem;
   line-height: 1.6;
+  font-family: "Literata", serif;
 }
 
 .wrapper {
@@ -221,6 +222,11 @@ img {
     opacity: 1;
   }
 }
+h1, h2, h3 {
+  font-weight: normal;
+  font-family: "Trade Winds", cursive;
+}
+
 .shadow {
   box-shadow: -10px 10px 0 #ff3333;
 }
