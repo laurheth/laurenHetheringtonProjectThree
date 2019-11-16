@@ -118,6 +118,12 @@
         "name": "The Atrium",
         "img": "assets/atrium.png",
         "description": "You find yourself in a large atrium. A glass covered skylight lets the light of the moon shimmer down into the area. Your torch light flickers along many large murals depicting creatures that almost look demonic. Four stone pillars hold the ceiling aloft, several storeys up. An archway leads into the hallways towards the dungeon cells, and another archway leads north towards another room. Small chunks of what appears to be coal litter the ground.",
+        "conditionalDescriptions": [
+            {
+                "if": ["catFriend"],
+                "description": "The cat demon is taking a nap in the corner. Best not to disturb them."
+            }
+        ],
         "items": {
             "coal": {
                 "itemDescription": "This 'coal' is extremely similar to the coal you know and love, but upon closer inspection doesn't quite match it. The shape is wrong, and it kind of smells like... cat?"
@@ -151,6 +157,13 @@
                 "action": "Explore towards the north.",
                 "result": "You walk north through the archway, into a strange room...",
                 "setLocation": "puzzleRoom"
+            },
+            {
+                "if": ["catFriend"],
+                "description": "The large archway to the east is no longer blocked. This is your chance to escape!",
+                "action": "Walk east and exit this vile dungeon.",
+                "result": "You walk east through the large archway...",
+                "setLocation": "outside"
             }
         ]
     },
@@ -169,25 +182,26 @@
             },
             {
                 "ifNot":["treatDeposited"],
-                "description": "At the base on the machine is an empty dish, covered with eons old claw marks."
+                "description": "At the base of the machine is an empty dish, covered with eons old claw marks."
             },
             {
                 "if": ["treatDeposited"],
                 "description": "This strange room is dominated by an enormous contraption. It has hundred of cogs, and an enormous water tank. Steam is venting from the machine as it cools down from its recent activity."
             },
             {
-                "if": ["kitty treat"],
+                "if": ["treatRemoved"],
                 "description": "At the base of the machine is an empty dish. You suspect it has received its quota of treats for the day."
             }
         ],
         "actions": [
             {
                 "if": ["treatDeposited"],
-                "ifNot": ["kitty treat"],
+                "ifNot": ["kitty treat","treatRemoved"],
                 "action": "Take the kitty treat.",
                 "result": "You pick up the kitty treat! You can feel it pulse in your hands with unholy magic.",
                 "description": "You notice a large and juicy looking kitty treat in the machine's dish!",
                 "addInventory": "kitty treat",
+                "addFlag": "treatRemoved",
                 "itemDescription": "It is a big and juicy kitty treat. It is ball shaped and brown in colour. Disconcertingly, the smell reminds you of the souls of the damned."
             },
             {
@@ -264,15 +278,90 @@
     },
     "catDemon": {
         "name": "The Cat Demon",
-        "description": "Sitting before you is the most fiendish cat you have ever seen. With long gray hair, and eyes that glow like the pits of hell itself.",
+        "conditionalDescriptions": [
+            {
+                "ifNot": ["catPetted","catFed"],
+                "description": "Sitting before you is the most fiendish cat you have ever seen. With long gray hair, and eyes that glow like the pits of hell itself."
+            },
+            {
+                "ifNot": ["catPetted","catFed"],
+                "description": "The cat gazes at you. Their eyes bore into your very heart and soul..."
+            },
+            {
+                "if": ["catPetted"],
+                "ifNot": ["catFed"],
+                "description": "The cat demon purrs loudly. The deep rumbling causes the entire dungeon to shake!"
+            },
+            {
+                "if": ["catFed"],
+                "ifNot": ["catPetted"],
+                "description": "The cat demon is rubbing against your legs. They crave affection!"
+            },
+            {
+                "if": ["kitty treat"],
+                "description": "The cat demon senses the kitty treat on your person. They gaze at you and lick their lips..."
+            },
+            {
+                "if": ["catFed","catPetted"],
+                "ifNot": ["catFriend"],
+                "description": "The cat demon seems very happy! But you sense there's one last thing they need..."
+            },
+            {
+                "if": ["catFriend"],
+                "img": "assets/sleepyDemonCat.jpg",
+                "description": "The cat demon is pleased, and is now taking a nap."
+            }
+        ],
         "img": "assets/demonCat.jpg",
         "actions": [
+            {
+                "action": "Step away from the cat.",
+                "result": "You slowly and carefully step away from the cat demon.",
+                "setLocation": "atrium"
+            },
+            {
+                "action": "Pet the cat.",
+                "result": "You reach out your hand to pet the cat demon...",
+                "forceDescription": [
+                    "They look at your hand, at first with suspicion, but then they push their small fluffy head into your hand and let you pet them.",
+                    "The heat coming from them is intense, and you're vaguely worried that you'll get burns, but they're just so darn cute!"
+                ],
+                "examineRoom": true,
+                "addFlag": "catPetted"
+            },
+            {
+                "if": ["kitty treat"],
+                "action": "Give the kitty treat to the cat demon.",
+                "result": "With the kitty treat pulsing your hand, you hold it out...",
+                "forceDescription": [
+                    "The cat demon lets out a guttural meow that makes your bones shake as they trot towards you and enthusiastically eat the kitty treat!"
+                ],
+                "needsItem": true,
+                "examineRoom": true,
+                "addFlag": "catFed",
+                "removeInventory": "kitty treat"
+            },
+            {
+                "if": ["catFed", "catPetted"],
+                "action": "Tell them they are a very good kitty.",
+                "result": "You tell the cat demon how good of a cat they are. And they believe you!",
+                "examineRoom": true,
+                "addFlag": "catFriend"
+            }
         ]
     },
     "outside": {
         "name": "Freedom!",
         "description": "You are outside! You have escaped from the dungeon and are free!",
-        "img": "https://placekitten.com/400/400",
-        "actions": []
+        "img": "assets/outside.jpg",
+        "actions": [
+            {
+                "action": "Restart the game.",
+                "description": "Thank you for playing!",
+                "result": "You decide to restart the game, and awaken to discover that your previous playthrough was all a dream...",
+                "setLocation": "dungeonCell",
+                "resetAll": true
+            }
+        ]
     }
 }

@@ -284,8 +284,18 @@ const adventureApp = {
                 forceDescription = action.forceDescription;
             }
 
-            // Done. Run the display method.
-            this.display(`${action.result}`,action.examineRoom,null,forceDescription);
+            // Reset all player items and flags
+            if ('resetAll' in action) {
+                this.player.inventory = {};
+                this.player.flags = {};
+                this.doneActions = {};
+                this.loadGameData();
+            }
+            else {
+                // Done. Run the display method.
+                this.display(`${action.result}`,action.examineRoom,null,forceDescription);
+            }
+
         }
     },
 
