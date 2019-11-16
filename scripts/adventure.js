@@ -348,8 +348,8 @@ const adventureApp = {
         // Add to the action box.
         this.$actionBox[method](`
                 <li>
+                <a ${(type==='item') ? 'data-item="'+item+'"' : ''} data-action="${action}" class="${type}" href="#">
                     <span>${symbol}</span>
-                    <a ${(type==='item') ? 'data-item="'+item+'"' : ''} class="${type}" href="#">
                         ${action}
                     </a>
                 </li>
@@ -364,31 +364,47 @@ const adventureApp = {
         }
     },
 
+    // Update doneActions
+    updateDoneActions: function(action) {
+        if (!(this.player.location in this.doneActions)) {
+            this.doneActions[this.player.location] = {};
+        }
+        this.doneActions[this.player.location][action.trim()]=true;
+    },
+
+    // Get action done
+    getActionText: function($anchor) {
+        if ($anchor.data('action')) {
+            return $anchor.data('action').trim();
+        }
+        else {
+            return $anchor.text();
+        }
+    },
+
     // Events listeners
     events: function() {
         // Actions
         $('#actionBox').on('click','a.action',function(event) {
             event.preventDefault();
 
+            const actionDone = adventureApp.getActionText($(this));
+
             // Has it been done before? If not, add it to doneActions.
-            if (!(adventureApp.player.location in adventureApp.doneActions)) {
-                adventureApp.doneActions[adventureApp.player.location] = {};
-            }
-            adventureApp.doneActions[adventureApp.player.location][$(this).text().trim()]=true;
+            adventureApp.updateDoneActions(actionDone);
 
             // Do the action!
-            adventureApp.doAction($(this).text());
+            adventureApp.doAction(actionDone);
         });
 
         // Item interactions
         $('#actionBox, #itemBox').on('click', 'a.item', function(event) {
             event.preventDefault();
 
+            const actionDone = adventureApp.getActionText($(this));
+
             // Has it been done before? If not, add it to doneActions.
-            if (!(adventureApp.player.location in adventureApp.doneActions)) {
-                adventureApp.doneActions[adventureApp.player.location] = {};
-            }
-            adventureApp.doneActions[adventureApp.player.location][$(this).text().trim()]=true;
+            adventureApp.updateDoneActions(actionDone);
 
             // Look at the item!
             const itemName = $(this).data('item');
