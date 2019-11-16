@@ -455,7 +455,6 @@ const adventureApp = {
         this.events();
         // Remove the "curtain"!
         $('#curtain').fadeOut('slow');
-        $('body').removeClass('noScroll');
         // Set the game title!
         $('h1').text(this.data.gameName);
         window.document.title=this.data.gameName;
