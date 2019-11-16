@@ -443,6 +443,10 @@ const adventureApp = {
         }).then((result) => {
             this.data=result;
             this.startGame();
+        }).fail((error) => {
+            // Something went wrong. Hide the loading messages and reveal the load error message.
+            $('.loading').hide();
+            $('.loadError').removeClass('loadError');
         })
     },
     
@@ -451,6 +455,7 @@ const adventureApp = {
         this.events();
         // Remove the "curtain"!
         $('#curtain').fadeOut('slow');
+        $('body').removeClass('noScroll');
         // Set the game title!
         $('h1').text(this.data.gameName);
         window.document.title=this.data.gameName;
