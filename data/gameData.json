@@ -9,7 +9,7 @@
     "dungeonCell": {
         "name": "Dungeon Cell",
         "description": "You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. There's strange etchings carved into the wall above the cell's bed. You have no recollection of how you got here, but it probably kind of sucked.",
-        "img": "https://placekitten.com/500/500",
+        "img": "assets/dungeonCell.png",
         "items": {
             "key": {
                 "description": "On the ground, there is a golden key. It glistens in the moonlight.",
@@ -71,7 +71,7 @@
     },
     "dungeonHall": {
         "name": "Dungeon Hallway",
-        "img": "https://placekitten.com/402/402",
+        "img": "assets/dungeonHallDark.png",
         "conditionalDescriptions" : [
             {
                 "if":["torch"],
@@ -115,7 +115,7 @@
     },
     "atrium": {
         "name": "The Atrium",
-        "img": "https://placekitten.com/403/403",
+        "img": "assets/atrium.png",
         "description": "You find yourself in a large atrium. A glass covered skylight lets the light of the moon shimmer down into the area. Your torch light flickers along many large murals depicting creatures that almost look demonic. Four stone pillars hold the ceiling aloft, several storeys up. An archway leads into the hallways towards the dungeon cells, and another archway leads north towards another room. Small chunks of what appears to be coal litter the ground.",
         "items": {
             "coal": {
@@ -147,7 +147,7 @@
                 "setLocation": "catDemon"
             },
             {
-                "action": "Walk north towards the mysterious other room.",
+                "action": "Explore towards the north.",
                 "result": "You walk north through the archway, into a strange room...",
                 "setLocation": "puzzleRoom"
             }
@@ -155,6 +155,7 @@
     },
     "puzzleRoom": {
         "name": "Clockwork Computer Room",
+        "img": "assets/clockworkComputer.png",
         "conditionalDescriptions": [
             {
                 "if":["powerButton"],
@@ -192,7 +193,7 @@
                 "ifNot": ["powerButton"],
                 "description": "There is a big red button in the middle of the machine.",
                 "action": "Push the big red button.",
-                "result": "You push the big red button. With a lound creak, the machine begins to operate! Centuries old clockwork bursts into motion, and you are almost deafned by the sound of venting steam!",
+                "result": "You push the big red button. With a loud creaking noise, the machine begins to operate! Centuries old clockwork bursts into motion, and you are almost deafened by the sound of venting steam!",
                 "addFlag": "powerButton",
                 "examineRoom": true
             },
@@ -213,12 +214,28 @@
                 "addFlag": "yellowLever"
             },
             {
+                "ifNot": ["treatDeposited","yellowLever"],
+                "if": ["redLever"],
+                "description": "A blue lever glows, as if begging to be pulled!",
+                "action": "Pull the blue lever.",
+                "result": "You pull the blue lever. Both it and the yellow lever flicker off! The red lever lights up once more.",
+                "removeFlag": "redLever"
+            },
+            {
                 "ifNot": ["treatDeposited","blueLever"],
                 "if": ["yellowLever"],
                 "description": "The blue lever is glowing!",
                 "action": "Pull the blue lever.",
                 "result": "You pull the blue lever. It's light goes out. The big red button in the center of the machine starts to flash!",
                 "addFlag": "blueLever"
+            },
+            {
+                "ifNot": ["treatDeposited","blueLever"],
+                "if": ["yellowLever"],
+                "description": "The red lever glows brightly!",
+                "action": "Pull the red lever.",
+                "result": "You pull the red lever. The blue light flickers off, but the red lever remains glowing.",
+                "removeFlag": ["yellowLever","redLever"]
             },
             {
                 "ifNot": ["treatDeposited"],
@@ -228,6 +245,14 @@
                 "result": "You push the big red button! With a thunk, an object is deposited into the bowl beneath the machine, and the whole contraption grinds to a halt!",
                 "addFlag": "treatDeposited",
                 "examineRoom": true
+            },
+            {
+                "ifNot": ["treatDeposited"],
+                "if": ["blueLever"],
+                "description": "The red lever glows brightly!",
+                "action": "Pull the red lever.",
+                "result": "You pull the red lever. The big red button stops flashing.",
+                "removeFlag": ["yellowLever","redLever","blueLever"]
             },
             {
                 "action": "Return to the atrium.",

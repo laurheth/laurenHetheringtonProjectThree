@@ -107,7 +107,6 @@ const adventureApp = {
             }
             if ('conditionalDescriptions' in locationObj) {
                 locationObj.conditionalDescriptions.forEach((thisDescription) => {
-                    console.log(thisDescription);
                     if (this.checkValidity(thisDescription)) {
                         description += `<p>${thisDescription.description}</p>`;
                     }
@@ -265,7 +264,7 @@ const adventureApp = {
             }
             // Does this remove a flag?
             if ('removeFlag' in action) {
-                this.player.remove('flags',action.removeInventory,removeAll);
+                this.player.remove('flags',action.removeFlag,removeAll);
             }
             // Does this move the player to a new location?
             if ('setLocation' in action) {
