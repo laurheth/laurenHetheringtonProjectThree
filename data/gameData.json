@@ -10,6 +10,7 @@
         "name": "Dungeon Cell",
         "description": "You find yourself in a cold and dark dungeon cell. Moonlight comes in through the barred window, and dampness accumulates on the cold walls. There's strange etchings carved into the wall opposite the cell's bed. You have no recollection of how you got here, but it probably kind of sucked.",
         "img": "assets/dungeonCell.png",
+        "imgAlt": "A dark dungeon cell with a bed on the left, and a barred window. You can see the Moon and some trees through the window.",
         "items": {
             "key": {
                 "description": "On the ground, there is a golden key. It glistens in the moonlight.",
@@ -72,10 +73,12 @@
     "dungeonHall": {
         "name": "Dungeon Hallway",
         "img": "assets/dungeonHallDark.png",
+        "imgAlt": "A dark hall extends into the distance. A barred door is to the left, and next to that door, is an unlit torch",
         "conditionalDescriptions" : [
             {
                 "if":["torch"],
                 "img": "assets/dungeonHallLight.png",
+                "imgAlt": "A hall extends into the distance. A barred door is to the left. The torch has been removed from its holder next to the cell door, because it is now in your inventory.",
                 "description": "Your torchlight flickers down the otherwise barely lit hallway. There are a total of four dungeon cells here, in addition to the one you awakened in. The floor and walls are smoothly cut granite. In the light, you can see that the hallway extends to the north, before taking a hard right turn."
             },
             {
@@ -117,6 +120,7 @@
     "atrium": {
         "name": "The Atrium",
         "img": "assets/atrium.png",
+        "imgAlt": "A large interior area is depicted. There's multiple archways in multiple directions. The Moon can be seen through the skylight. On the wall is art of two devilish entities, drawn in red, with the text 'Floats rule' and 'Hail clearfix' written in all uppercase letters.",
         "description": "You find yourself in a large atrium. A glass covered skylight lets the light of the moon shimmer down into the area. Your torch light flickers along many large murals depicting creatures that almost look demonic. Four stone pillars hold the ceiling aloft, several storeys up. An archway leads into the hallways towards the dungeon cells, and another archway leads north towards another room. Small chunks of what appears to be coal litter the ground.",
         "conditionalDescriptions": [
             {
@@ -170,6 +174,7 @@
     "puzzleRoom": {
         "name": "Clockwork Computer Room",
         "img": "assets/clockworkComputer.png",
+        "imgAlt": "A machine is depicted. It is broad, with two large feet, and a recessed area in the middle containing a big red button. A half pipe leads out of a hole below the recessed area, leading into a big blueish gray bowl. Bronze cogs adorn the entire machine, and three large smokestacks protrude from its top. There are three levers next to it, a red one, a yellow one, and a blue one.",
         "conditionalDescriptions": [
             {
                 "if":["powerButton"],
@@ -309,10 +314,12 @@
             {
                 "if": ["catFriend"],
                 "img": "assets/sleepyDemonCat.jpg",
+                "imgAlt": "A medium haired grey cat with crimson eyes, sleeping on their back in a corner. They look very comfortable.",
                 "description": "The cat demon is pleased, and is now taking a nap."
             }
         ],
         "img": "assets/demonCat.jpg",
+        "imgAlt": "A medium haired grey cat with crimson eyes, sitting in the middle of an open doorway. They are staring directly at you.",
         "actions": [
             {
                 "action": "Step away from the cat.",
@@ -354,6 +361,7 @@
         "name": "Freedom!",
         "description": "You are outside! You have escaped from the dungeon and are free!",
         "img": "assets/outside.jpg",
+        "imgAlt": "A panoramic view of the great outdoors at night. The full Moon shines bright in the sky, over a boreal forest. The large gray castle you just escaped from dominates the view, but looks much smaller from here.",
         "actions": [
             {
                 "action": "Restart the game.",

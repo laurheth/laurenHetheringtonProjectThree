@@ -87,6 +87,7 @@ const adventureApp = {
         let locationObj = this.data[this.player.location];
 
         let imgSrc=locationObj.img;
+        let imgAlt=locationObj.imgAlt;
 
         // Title of the current location
         this.$locationTitle.text(locationObj.name);
@@ -117,6 +118,7 @@ const adventureApp = {
                         }
                         if ('img' in thisDescription) {
                             imgSrc = thisDescription.img;
+                            imgAlt = thisDescription.imgAlt;
                         }
                     }
                 });
@@ -124,7 +126,7 @@ const adventureApp = {
         }
 
         // Update the image
-        this.updateImage(imgSrc);
+        this.updateImage(imgSrc,imgAlt);
 
         // Empty the action box before we repopulate it
         this.$actionBox.empty();
@@ -359,7 +361,7 @@ const adventureApp = {
     // Update image
     updateImage: function(imgSrc, alt=`Image of the current location.`) {
         if (imgSrc !== this.lastSetImage) {
-            this.$imgContainer.html(`<img src=${imgSrc} alt=${alt}>`);
+            this.$imgContainer.html(`<img src=${imgSrc} alt="${alt}">`);
             this.lastSetImage = imgSrc;
         }
     },
