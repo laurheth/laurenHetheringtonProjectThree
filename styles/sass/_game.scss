@@ -80,13 +80,16 @@ a:focus::before {
 
 ul {
     padding-left: 20px;
-    text-transform: capitalize;
     i {
         color: $mainAccent;
     }
     .fa-check-square {
         color: $secondaryAccent;
     }
+}
+
+ul.itemBox {
+    text-transform: capitalize;
 }
 
 header {
@@ -108,6 +111,17 @@ header {
     margin-bottom: $columnSpace;
     .column {
         width: calc(50% - #{$columnSpace} / 2 );
+        .imgContainer {
+            width: 100%;
+            padding-bottom: 100%;
+            position: relative;
+            img {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                animation: fadeIn 1s linear forwards;
+            }
+        }
     }
 }
 

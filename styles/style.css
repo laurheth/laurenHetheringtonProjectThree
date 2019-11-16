@@ -295,13 +295,16 @@ a:focus::before {
 
 ul {
   padding-left: 20px;
-  text-transform: capitalize;
 }
 ul i {
   color: #ff3333;
 }
 ul .fa-check-square {
   color: #ffdd33;
+}
+
+ul.itemBox {
+  text-transform: capitalize;
 }
 
 header {
@@ -320,6 +323,17 @@ header h1 {
 }
 .row .column {
   width: calc(50% - 20px / 2 );
+}
+.row .column .imgContainer {
+  width: 100%;
+  padding-bottom: 100%;
+  position: relative;
+}
+.row .column .imgContainer img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  animation: fadeIn 1s linear forwards;
 }
 
 main h2 {

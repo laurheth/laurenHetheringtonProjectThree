@@ -178,7 +178,7 @@
             },
             {
                 "ifNot": ["powerButton"],
-                "description": "This strange room is dominated by an enormous contraption. It has hundred of cogs, and an enormous water tank. It looks as though it hasn't been turned on in decades."
+                "description": "This strange room is dominated by an enormous contraption. It has hundreds of cogs, and an enormous water tank. It looks as though it hasn't been turned on in decades."
             },
             {
                 "ifNot":["treatDeposited"],
@@ -186,7 +186,7 @@
             },
             {
                 "if": ["treatDeposited"],
-                "description": "This strange room is dominated by an enormous contraption. It has hundred of cogs, and an enormous water tank. Steam is venting from the machine as it cools down from its recent activity."
+                "description": "This strange room is dominated by an enormous contraption. It has hundreds of cogs, and an enormous water tank. Steam is venting from the machine as it cools down from its recent activity."
             },
             {
                 "if": ["treatRemoved"],
@@ -332,7 +332,7 @@
             {
                 "if": ["kitty treat"],
                 "action": "Give the kitty treat to the cat demon.",
-                "result": "With the kitty treat pulsing your hand, you hold it out...",
+                "result": "With the kitty treat pulsing in your hand, you hold it out...",
                 "forceDescription": [
                     "The cat demon lets out a guttural meow that makes your bones shake as they trot towards you and enthusiastically eat the kitty treat!"
                 ],

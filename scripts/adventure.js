@@ -6,6 +6,8 @@ const adventureApp = {
     $itemBox: null,
     $locationTitle: null,
 
+    lastSetImage:"",
+
     // This object gets populated by item descriptions, as the player acquires them.
     itemDictionary: {},
 
@@ -122,7 +124,7 @@ const adventureApp = {
         }
 
         // Update the image
-        this.$imgContainer.html(`<img src=${imgSrc} alt="Image of the current location.">`);
+        this.updateImage(imgSrc);
 
         // Empty the action box before we repopulate it
         this.$actionBox.empty();
@@ -352,6 +354,14 @@ const adventureApp = {
                     </a>
                 </li>
             `);
+    },
+
+    // Update image
+    updateImage: function(imgSrc, alt=`Image of the current location.`) {
+        if (imgSrc !== this.lastSetImage) {
+            this.$imgContainer.html(`<img src=${imgSrc} alt=${alt}>`);
+            this.lastSetImage = imgSrc;
+        }
     },
 
     // Events listeners
