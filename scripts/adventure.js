@@ -84,6 +84,8 @@ const adventureApp = {
         // Save reference to the current location because we're going to be referencing it a lot
         let locationObj = this.data[this.player.location];
 
+        let imgSrc=locationObj.img;
+
         // Title of the current location
         this.$locationTitle.text(locationObj.name);
         let description = '';
@@ -108,14 +110,19 @@ const adventureApp = {
             if ('conditionalDescriptions' in locationObj) {
                 locationObj.conditionalDescriptions.forEach((thisDescription) => {
                     if (this.checkValidity(thisDescription)) {
-                        description += `<p>${thisDescription.description}</p>`;
+                        if ('description' in thisDescription) {
+                            description += `<p>${thisDescription.description}</p>`;
+                        }
+                        if ('img' in thisDescription) {
+                            imgSrc = thisDescription.img;
+                        }
                     }
                 });
             }
         }
 
         // Update the image
-        this.$imgContainer.html(`<img src=${locationObj.img} alt="Image of the current location.">`);
+        this.$imgContainer.html(`<img src=${imgSrc} alt="Image of the current location.">`);
 
         // Empty the action box before we repopulate it
         this.$actionBox.empty();

@@ -75,6 +75,7 @@
         "conditionalDescriptions" : [
             {
                 "if":["torch"],
+                "img": "assets/dungeonHallLight.png",
                 "description": "Your torchlight flickers down the otherwise barely lit hallway. There are a total of four dungeon cells here, in addition to the one you awakened in. The floor and walls are smoothly cut granite. In the light, you can see that the hallway extends to the north, before taking a hard right turn."
             },
             {
@@ -264,7 +265,7 @@
     "catDemon": {
         "name": "The Cat Demon",
         "description": "Sitting before you is the most fiendish cat you have ever seen. With long gray hair, and eyes that glow like the pits of hell itself.",
-        "img": "https://placekitten.com/405/405",
+        "img": "assets/demonCat.jpg",
         "actions": [
         ]
     },
