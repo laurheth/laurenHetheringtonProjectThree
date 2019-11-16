@@ -305,8 +305,7 @@ ul .fa-check-square {
 }
 
 header {
-  min-height: 10vh;
-  padding: 30px 0;
+  padding: 30px 0 45px 0;
 }
 header h1 {
   text-align: center;
@@ -323,9 +322,6 @@ header h1 {
   width: calc(50% - 20px / 2 );
 }
 
-main {
-  min-height: 85vh;
-}
 main h2 {
   margin-bottom: 15px;
 }
@@ -348,8 +344,7 @@ main .actionBox li span {
 }
 
 footer {
-  min-height: 5vh;
-  margin-top: 30px;
+  margin: 55px 0 30px 0;
 }
 footer p {
   text-align: center;

@@ -92,8 +92,8 @@ ul {
 header {
     // background: $mainLight;
     // color: $mainDark;
-    min-height: 10vh;
-    padding: 30px 0;
+    // min-height: 10vh;
+    padding: 30px 0 #{30px + $cardEdge} 0;
     h1 {
         // margin: 0 auto;
         text-align: center;
@@ -112,7 +112,7 @@ header {
 }
 
 main {
-    min-height: 85vh;
+    // min-height: 85vh;
     h2 {
         margin-bottom: 15px;
     }
@@ -136,8 +136,8 @@ main {
     }
 }
 footer {
-    min-height: 5vh;
-    margin-top: 30px;
+    // min-height: 5vh;
+    margin: #{30px + $shadow + $cardEdge} 0 30px 0;
     p {
         text-align: center;
     }
