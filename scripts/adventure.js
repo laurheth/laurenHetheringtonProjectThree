@@ -23,6 +23,8 @@ const adventureApp = {
         location: '',
         // What's in their pockets?
         inventory: {},
+        // Checked items?
+        inventoryChecked: {},
         // Flags to keep track of (i.e. has a door been opened? Is the light switch on?)
         flags: {},
 
@@ -198,13 +200,7 @@ const adventureApp = {
         this.$itemBox.empty();
         if (Object.keys(this.player.inventory).length>0) {
             Object.keys(this.player.inventory).forEach((item) => {
-                this.$itemBox.append(`
-                    <li>
-                        <a class="item" data-item="${item}" href="#">
-                            ${item}
-                        </a>
-                    </li>
-                `)
+                this.addToItems(item);
             });
         } 
         else {
@@ -246,11 +242,20 @@ const adventureApp = {
             const item = actionDone.match(itemRegex)[1];
             // Add to the players inventory
             this.player.add('inventory',item);
+
             // Add the item definition to the dictionary
             this.itemDictionary[item] = this.data[this.player.location].items[item].itemDescription;
+
+            let result='`You ${actionDone.toLowerCase()}`';
+            
+            if ('result' in this.data[this.player.location].items[item]) {
+                result = this.data[this.player.location].items[item].result;
+            }
+
             // Remove for the room items list; no picking it up twice!
             delete this.data[this.player.location].items[item];
-            this.display(`You ${actionDone.toLowerCase()}`,false);
+
+            this.display(result,false);
             return;
         }
 
@@ -306,9 +311,20 @@ const adventureApp = {
                 forceDescription = action.forceDescription;
             }
 
+            // Does this action check any inventory items?
+            if ('checkInventory' in action) {
+                if (!Array.isArray(action.checkInventory)) {
+                    action.checkInventory = [action.checkInventory];
+                }
+                action.checkInventory.forEach( (item) => {
+                    this.player.inventoryChecked[item]=true;
+                })
+            }
+
             // Reset all player items and flags
             if ('resetAll' in action) {
                 this.player.inventory = {};
+                this.player.inventoryChecked = {};
                 this.player.flags = {};
                 this.doneActions = {};
                 this.loadGameData();
@@ -368,12 +384,35 @@ const adventureApp = {
         // Add to the action box.
         this.$actionBox[method](`
                 <li>
-                <a ${(type==='item') ? 'data-item="'+item+'"' : ''} data-action="${action}" class="${type}" href="#">
-                    <span>${symbol}</span>
+                    <a ${(type==='item') ? 'data-item="'+item+'"' : ''} data-action="${action}" class="${type}" href="#">
+                        ${symbol}
                         ${action}
                     </a>
                 </li>
             `);
+    },
+
+    // Append to list of items
+    addToItems: function(item) {
+        // Default symbol
+        let symbol=`<i class="far fa-square"></i>`;
+        // Default to prepending.
+        let method='prepend';
+
+        // Has the action been done before, at this location?
+        if (item in this.player.inventoryChecked && this.player.inventoryChecked[item]) {
+            // Switch to the "done" symbol and append instead of prepend.
+            symbol=`<i class="far fa-check-square"></i>`;
+            method='append';
+        }
+        this.$itemBox[method](`
+            <li>
+                <a class="item" data-item="${item}" data-action="${item}" href="#">
+                    ${symbol}
+                    ${item}
+                </a>
+            </li>
+        `)
     },
 
     // Update image

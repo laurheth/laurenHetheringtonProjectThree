@@ -51,7 +51,7 @@
             {
                 "ifNot": ["cellOpen"],
                 "action": "Open cell door.",
-                "result": "You try to open the door, but it is locked shut. It's wrought iron bars will not yield, however hard you pull!"
+                "result": "You try to open the door, but it is locked shut. Its wrought iron bars will not yield, however hard you pull!"
             },
             {
                 "if": ["key"],
@@ -60,7 +60,7 @@
                 "action": "Unlock cell door using the key.",
                 "result": "You unlock the cell door. It makes a very satisfying clinking sound. The cell door swings open!",
                 "addFlag": "cellOpen",
-                "removeInventory": "key"
+                "checkInventory": ["key"]
             },
             {
                 "if": ["cellOpen"],
@@ -102,7 +102,8 @@
                 "result": "You set the torch aflame!",
                 "examineRoom": true,
                 "addInventory": "torch",
-                "itemDescription": "It's a short iron staff with one end aflame. It's light helps you see your surroundings."
+                "checkInventory": ["torch","lighter"],
+                "itemDescription": "It's a short iron staff with one end aflame. Its light helps you see your surroundings."
             },
             {
                 "action": "Return to the dungeon cell.",
@@ -222,7 +223,7 @@
                 "if": ["powerButton"],
                 "description": "The end of a red lever glows, inviting you to pull it.",
                 "action": "Pull the red lever.",
-                "result": "You pull the red lever. It's light goes out. A yellow lever and a blue lever light up!",
+                "result": "You pull the red lever. Its light goes out. A yellow lever and a blue lever light up!",
                 "addFlag": "redLever"
             },
             {
@@ -230,7 +231,7 @@
                 "if": ["redLever"],
                 "description": "One of the yellow levers is glowing, ready to be pulled.",
                 "action": "Pull the yellow lever.",
-                "result": "You pull the yellow lever. It's light goes out. The blue lever remains on, and the red lever reactivates!",
+                "result": "You pull the yellow lever. Its light goes out. The blue lever remains on, and the red lever reactivates!",
                 "addFlag": "yellowLever"
             },
             {
@@ -246,7 +247,7 @@
                 "if": ["yellowLever"],
                 "description": "The blue lever is glowing!",
                 "action": "Pull the blue lever.",
-                "result": "You pull the blue lever. It's light goes out. The big red button in the center of the machine starts to flash!",
+                "result": "You pull the blue lever. Its light goes out. The big red button in the center of the machine starts to flash!",
                 "addFlag": "blueLever"
             },
             {

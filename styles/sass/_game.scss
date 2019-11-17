@@ -125,14 +125,10 @@ main {
     }
     .lastAction {
         font-weight: bold;
-        color: $secondaryAccent;
     }
-    .actionBox{
+    .actionBox, .itemBox{
         padding: 0;
         li {
-            span {
-                color: $mainLight;
-            }
             list-style: none;
         }
 

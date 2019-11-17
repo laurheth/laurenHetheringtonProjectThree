@@ -375,16 +375,12 @@ main p {
 }
 main .lastAction {
   font-weight: bold;
-  color: #ffdd33;
 }
-main .actionBox {
+main .actionBox, main .itemBox {
   padding: 0;
 }
-main .actionBox li {
+main .actionBox li, main .itemBox li {
   list-style: none;
-}
-main .actionBox li span {
-  color: #eeffee;
 }
 
 footer {
