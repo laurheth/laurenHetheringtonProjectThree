@@ -1,58 +1,10 @@
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes rotateSelf {
-    0% {
-        transform: rotateZ(0deg);
-    }
-    100% {
-        transform: rotateZ(360deg);
-    }
-}
-
-h1,h2,h3 {
-    font-weight: normal;
-    font-family: 'Trade Winds', cursive;
-}
-
-.shadow {
-    box-shadow: -$shadow $shadow 0 $mainAccent;
-}
-
-.shadowRight {
-    box-shadow: $shadow $shadow 0 $mainAccent;
-}
-
-.cardBackground {
-    position: absolute;
-    top: -$cardEdge;
-    bottom: -$cardEdge;
-    left: -$cardEdge;
-    right: -$cardEdge;
-    z-index: -10;
-    background: lighten($mainDark,1%);
-}
-
-.reverse.row {
-    flex-direction: row-reverse;
-}
-
-.noScroll {
-    overflow: hidden;
-}
-
 body {
     position: relative;
     background: $mainDark;
     color: $mainLight;
 }
 
+// The preloader curtain
 .curtain {
     position: fixed;
     width: 100%;
@@ -70,6 +22,7 @@ body {
     align-items: center;
     font-size: 40px;
     text-align: center;
+    // The rotating loading image
     .imgContainer.loading {
         animation: rotateSelf 2s linear infinite;
         width: 10vw;
@@ -80,19 +33,33 @@ body {
             border-radius: 50%;
         }
     }
+    // Hide the error messages until needed
     .loadError {
         display: none;
     }
+    // Font size
     p {
         font-size: 1rem;
     }
 }
 
+// Header styling
+header {
+    padding: 30px 0 #{30px + $cardEdge} 0;
+    h1 {
+        text-align: center;
+        text-shadow: 4px 4px 0 $mainAccent;
+        font-size: 2.5rem;
+    }
+}
+
+// Anchor tag styling
 a {
     position: relative;
     color: $secondaryAccent;
 }
 
+// Makes an underline that stretches across on hover/focus
 a::before {
     content:'';
     position: absolute;
@@ -111,6 +78,7 @@ a:focus::before {
     width: 100%;
 }
 
+// List styling for action box and item box
 ul {
     padding-left: 20px;
     i {
@@ -125,19 +93,7 @@ ul.itemBox {
     text-transform: capitalize;
 }
 
-header {
-    // background: $mainLight;
-    // color: $mainDark;
-    // min-height: 10vh;
-    padding: 30px 0 #{30px + $cardEdge} 0;
-    h1 {
-        // margin: 0 auto;
-        text-align: center;
-        text-shadow: 4px 4px 0 $mainAccent;
-        font-size: 2.5rem;
-    }
-}
-
+// Flex row
 .row {
     display: flex;
     justify-content: space-between;
@@ -158,8 +114,8 @@ header {
     }
 }
 
+// Styling for the main section
 main {
-    // min-height: 85vh;
     h2 {
         margin-bottom: 15px;
     }
@@ -182,16 +138,12 @@ main {
 
     }
 }
+
+// Footer
 footer {
     // min-height: 5vh;
     margin: #{30px + $shadow + $cardEdge} 0 30px 0;
     p {
         text-align: center;
     }
-}
-
-.box {
-    border: 4px solid $mainAccent;
-    // display: inlinblock;
-    padding: 10px;
 }

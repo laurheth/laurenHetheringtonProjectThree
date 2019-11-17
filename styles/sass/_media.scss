@@ -1,3 +1,4 @@
+// Widen the wrapper and reduce h1 font size
 @media (max-width: 800px) {
     .wrapper {
         width: calc(100% - #{2*$columnSpace});
@@ -7,6 +8,7 @@
     }
 }
 
+// Reorganize everything into a single column
 @media (max-width: 600px) {
     .row {
         flex-wrap: wrap;
