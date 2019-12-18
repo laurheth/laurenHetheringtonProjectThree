@@ -262,7 +262,7 @@ h1, h2, h3 {
 body {
   position: relative;
   background: #110011;
-  color: #eeffee;
+  color: #ffffff;
 }
 
 .curtain {
@@ -272,7 +272,7 @@ body {
   top: 0;
   left: 0;
   background: #110011;
-  color: #eeffee;
+  color: #ffffff;
   z-index: 10;
   display: flex;
   width: 100%;
